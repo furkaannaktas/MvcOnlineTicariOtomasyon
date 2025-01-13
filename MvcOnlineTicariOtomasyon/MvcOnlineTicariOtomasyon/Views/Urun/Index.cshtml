@@ -1,0 +1,97 @@
+﻿@using MvcOnlineTicariOtomasyon.Models.Siniflar;
+@model List<Urun>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<br />
+@using (Html.BeginForm("Index", "Urun", FormMethod.Get))
+{
+    <div class="input-group mb-3">
+        <input type="text" name="p" class="form-control" placeholder="Ürün Ara" aria-label="Ürün Adı" aria-describedby="search-addon">
+        <div class="input-group-append">
+            <button class="btn btn-dark" type="submit" id="search-addon">
+                <i class="fa fa-search"></i> Ara
+            </button>
+        </div>
+    </div>
+}
+<br />
+<table class="table table-bordered table-dark table-hover table-striped">
+    <tr>
+        <th>ÜRÜN</th>
+        <th>MARKA</th>
+        <th>STOK</th>
+        <th>ALIŞ FİYAT</th>
+        <th>SATIŞ FİYAT</th>
+        <th>KATEGORİ</th>
+        <th>SİL</th>
+        <th>GÜNCELLE</th>
+        <th>SATIŞ YAP</th>
+    </tr>
+    @foreach (var u in Model)
+    {
+        <tr id="row-@u.Urunid">
+            <td>@u.UrunAd</td>
+            <td>@u.Marka</td>
+            <td>@u.Stok</td>
+            <td>@u.AlisFiyat ₺</td>
+            <td>@u.SatisFiyat ₺</td>
+            <td>@u.Kategori.KategoriAD</td>
+            <td>
+                <button class="btn btn-danger" onclick="confirmDelete('@u.Urunid')">Sil</button>
+            </td>
+            <td>
+                <a href="/Urun/UrunGetir/@u.Urunid" class="btn btn-warning">Güncelle</a>
+            </td>
+            <td>
+                <a href="/Urun/SatisYap/@u.Urunid" class="btn btn-success">Satış Yap</a>
+            </td>
+        </tr>
+    }
+</table>
+<a href="/Urun/YeniUrun/" class="btn btn-info">Yeni Ürün</a>
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+<script>
+    // Silme işlemi için SweetAlert kullanarak onay alıyoruz
+    function confirmDelete(urunId) {
+        swal({
+            title: "Emin misiniz?",
+            text: "Bu ürünü silmek istediğinizden emin misiniz? Bir kez silindiğinde geri alınamaz!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((willDelete) => {
+            if (willDelete) {
+                $.ajax({
+                    url: '/Urun/UrunSil/' + urunId,
+                    type: 'POST',
+                    success: function () {
+                        swal({
+                            title: "Başarılı!",
+                            text: "Ürün başarıyla silindi.",
+                            icon: "success",
+                            button: "Tamam",
+                        }).then(() => {
+                            $('#row-' + urunId).remove(); // Tablo satırını kaldır
+                        });
+                    },
+                    error: function () {
+                        swal({
+                            title: "Hata!",
+                            text: "Bir hata oluştu. Lütfen tekrar deneyin.",
+                            icon: "error",
+                            button: "Tamam",
+                        });
+                    }
+                });
+            }
+        });
+    }
+</script>

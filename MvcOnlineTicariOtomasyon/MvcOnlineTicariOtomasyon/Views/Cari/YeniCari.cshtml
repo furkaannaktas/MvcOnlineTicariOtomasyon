@@ -1,0 +1,48 @@
+﻿@model MvcOnlineTicariOtomasyon.Models.Siniflar.Cariler
+@{
+    ViewBag.Title = "YeniCari";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<br />
+<h2>Yeni Cari Sayfası</h2>
+<br />
+<form class="form-group" id="cariForm" method="post">
+    @Html.LabelFor(x => x.CariAd)
+    @Html.TextBoxFor(x => x.CariAd, new { @class = "form-control", required = "required" })
+    <br />
+    @Html.LabelFor(x => x.CariSoyad)
+    @Html.TextBoxFor(x => x.CariSoyad, new { @class = "form-control", required = "required" })
+    <br />
+    @Html.LabelFor(x => x.CariSehir)
+    @Html.TextBoxFor(x => x.CariSehir, new { @class = "form-control", required = "required" })
+    <br />
+    @Html.LabelFor(x => x.CariMail)
+    @Html.TextBoxFor(x => x.CariMail, new { @class = "form-control", required = "required", type = "email" })
+    <br />
+    <button type="button" class="btn btn-info" onclick="submitForm()">Kaydet</button>
+</form>
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+<script>
+    function submitForm() {
+        // Formu AJAX ile gönderiyoruz
+        $.ajax({
+            url: '@Url.Action("YeniCari", "Cari")',
+            type: 'POST',
+            data: $('#cariForm').serialize(),
+            success: function () {
+                swal({
+                    title: "Başarılı!",
+                    text: "Yeni Cari başarıyla eklendi.",
+                    icon: "success",
+                    button: "Tamam",
+                }).then(() => {
+                    window.location.href = '/Cari/Index'; // Başarılı işlemden sonra yönlendirme
+                });
+            }
+        });
+    }
+</script>

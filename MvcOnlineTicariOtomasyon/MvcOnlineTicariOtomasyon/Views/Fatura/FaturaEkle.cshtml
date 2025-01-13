@@ -1,0 +1,73 @@
+﻿@model MvcOnlineTicariOtomasyon.Models.Siniflar.Faturalar
+@{
+    ViewBag.Title = "FaturaEkle";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+<br />
+<h2>Yeni Fatura Sayfası</h2>
+<br />
+<form class="form-group" method="post" id="faturaForm">
+    @Html.LabelFor(x => x.FaturaSeriNo)
+    @Html.TextBoxFor(x => x.FaturaSeriNo, new { @class = "form-control" })
+    <br />
+    @Html.LabelFor(x => x.FaturaSıraNo)
+    @Html.TextBoxFor(x => x.FaturaSıraNo, new { @class = "form-control" })
+    <br />
+    @Html.LabelFor(x => x.Tarih)
+    @Html.TextBoxFor(x => x.Tarih, new { @class = "form-control" })
+    <br />
+    @Html.LabelFor(x => x.Saat)
+    @Html.TextBoxFor(x => x.Saat, new { @class = "form-control" })
+    <br />
+    @Html.LabelFor(x => x.VergiDairesi)
+    @Html.TextBoxFor(x => x.VergiDairesi, new { @class = "form-control" })
+    <br />
+    @Html.LabelFor(x => x.TeslimEden)
+    @Html.TextBoxFor(x => x.TeslimEden, new { @class = "form-control" })
+    <br />
+    @Html.LabelFor(x => x.TeslimAlan)
+    @Html.TextBoxFor(x => x.TeslimAlan, new { @class = "form-control" })
+    <br />
+    <button type="submit" class="btn btn-info">Kaydet</button>
+</form>
+
+<script>
+    $(document).ready(function () {
+        $('#faturaForm').on('submit', function (event) {
+            event.preventDefault(); // Formun varsayılan gönderimini engelle
+
+            // Form verilerini JSON olarak al
+            var formData = {
+                FaturaSeriNo: $("#FaturaSeriNo").val(),
+                FaturaSıraNo: $("#FaturaSıraNo").val(),
+                Tarih: $("#Tarih").val(),
+                Saat: $("#Saat").val(),
+                VergiDairesi: $("#VergiDairesi").val(),
+                TeslimEden: $("#TeslimEden").val(),
+                TeslimAlan: $("#TeslimAlan").val()
+            };
+
+            // AJAX isteği gönder
+            $.ajax({
+                url: '@Url.Action("FaturaEkle", "Fatura")',
+                type: 'POST',
+                data: $(this).serialize(),
+                success: function () {
+                    swal({
+                        title: "Başarılı!",
+                        text: "Yeni fatura başarıyla eklendi.",
+                        icon: "success",
+                        button: "Tamam",
+                    }).then(() => {
+                        // Başarılı mesajdan sonra yönlendirme
+                        window.location.href = '@Url.Action("Index", "Fatura")';
+                    });
+                }
+            });
+        });
+    });
+</script>

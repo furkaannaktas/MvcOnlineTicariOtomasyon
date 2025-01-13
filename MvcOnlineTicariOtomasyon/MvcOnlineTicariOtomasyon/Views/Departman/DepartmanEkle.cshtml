@@ -1,0 +1,52 @@
+﻿@model MvcOnlineTicariOtomasyon.Models.Siniflar.Departman
+@{
+    ViewBag.Title = "DepartmanEkle";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+<br />
+<h2>Yeni Departman Sayfası</h2>
+<br />
+<form class="form-group" method="post" id="departmanForm">
+    @Html.LabelFor(x => x.DepartmanAd)
+    @Html.TextBoxFor(x => x.DepartmanAd, new { @class = "form-control" })
+    <br />
+    <button type="submit" class="btn btn-info" id="submitBtn">Kaydet</button>
+</form>
+
+<script>
+    $('#departmanForm').on('submit', function (event) {
+        event.preventDefault(); // Formun otomatik gönderimini engeller
+
+        // Formu AJAX ile gönder
+        $.ajax({
+            url: '@Url.Action("DepartmanEkle", "Departman")',
+            type: 'POST',
+            data: $(this).serialize(), // Form verilerini al
+            success: function () {
+                // Başarılı olduğunda SweetAlert mesajı göster
+                swal({
+                    title: "Başarılı!",
+                    text: "Departman başarıyla eklendi.",
+                    icon: "success",
+                    button: "Tamam",
+                }).then(() => {
+                    // Mesajdan sonra sayfayı yenile veya yönlendir
+                    window.location.href = '@Url.Action("Index", "Departman")';
+                });
+            },
+            error: function () {
+                // Hata durumunda bir uyarı göster
+                swal({
+                    title: "Hata!",
+                    text: "Departman eklenirken bir hata oluştu.",
+                    icon: "error",
+                    button: "Tamam",
+                });
+            }
+        });
+    });
+</script>

@@ -1,0 +1,67 @@
+﻿@model MvcOnlineTicariOtomasyon.Models.Siniflar.Personel
+@{
+    ViewBag.Title = "Personel Güncelleme Sayfası";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="~/Scripts/jquery-3.7.0.js"></script>
+
+<br />
+<h2>Personel Güncelleme Sayfası</h2>
+<br />
+
+@using (Html.BeginForm("PersonelGuncelle", "Personel", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(x => x.PersonelId)
+
+    @Html.LabelFor(x => x.PersonelAd)
+    @Html.TextBoxFor(x => x.PersonelAd, new { @class = "form-control" })
+    <br />
+
+    @Html.LabelFor(x => x.PersonelSoyad)
+    @Html.TextBoxFor(x => x.PersonelSoyad, new { @class = "form-control" })
+    <br />
+
+    @Html.LabelFor(x => x.PersonelGorsel)
+    <input type="file" name="PersonelGorsel" class="form-control" />
+    <br />
+
+    @Html.LabelFor(x => x.Departman)
+    @Html.DropDownListFor(x => x.Departmanid, (List<SelectListItem>)ViewBag.dgr1, new { @class = "form-control" })
+    <br />
+
+    <button class="btn btn-warning">Güncelle</button>
+}
+
+<script>
+    // TempData'dan gelen mesajı kontrol et ve SweetAlert ile göster
+    @if (TempData["PersonelGuncelleMesaj"] != null)
+    {
+        <text>
+            swal({
+                title: "Başarılı!",
+                text: "@TempData["PersonelGuncelleMesaj"]",
+                icon: "success",
+                button: "Tamam",
+            });
+        </text>
+    }
+
+    // Form gönderme işlemi için
+    $('form').submit(function(event) {
+        // Formun gönderilmesini engelle
+        event.preventDefault();
+
+        // SweetAlert ile başarı mesajı
+        swal({
+            title: "Başarılı!",
+            text: "Personel başarıyla güncellendi.",
+            icon: "success",
+            button: "Tamam",
+        }).then(() => {
+            // Mesajdan sonra formu gönder
+            $(this).off('submit').submit(); // formu gönder
+        });
+    });
+</script>

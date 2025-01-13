@@ -1,0 +1,71 @@
+﻿@model MvcOnlineTicariOtomasyon.Models.Siniflar.Faturalar
+@{
+    ViewBag.Title = "FaturaGetir";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="~/Scripts/jquery-3.7.0.js"></script>
+
+<br />
+<h2>Fatura Güncelleme Sayfası</h2>
+<br />
+
+@using (Html.BeginForm("FaturaGuncelle", "Fatura", FormMethod.Post))
+{
+    @Html.HiddenFor(x => x.Faturaid)
+    @Html.LabelFor(x => x.FaturaSeriNo)
+    @Html.TextBoxFor(x => x.FaturaSeriNo, new { @class = "form-control" })
+    <br />
+    @Html.LabelFor(x => x.FaturaSıraNo)
+    @Html.TextBoxFor(x => x.FaturaSıraNo, new { @class = "form-control" })
+    <br />
+    @Html.LabelFor(x => x.VergiDairesi)
+    @Html.TextBoxFor(x => x.VergiDairesi, new { @class = "form-control" })
+    <br />
+    @Html.LabelFor(x => x.Tarih)
+    @Html.TextBoxFor(x => x.Tarih, new { @class = "form-control" })
+    <br />
+    @Html.LabelFor(x => x.Saat)
+    @Html.TextBoxFor(x => x.Saat, new { @class = "form-control" })
+    <br />
+    @Html.LabelFor(x => x.TeslimEden)
+    @Html.TextBoxFor(x => x.TeslimEden, new { @class = "form-control" })
+    <br />
+    @Html.LabelFor(x => x.TeslimAlan)
+    @Html.TextBoxFor(x => x.TeslimAlan, new { @class = "form-control" })
+    <br />
+    <button class="btn btn-warning">Güncelle</button>
+}
+
+<script>
+    // TempData'dan gelen mesajı kontrol et ve SweetAlert ile göster
+    @if (TempData["FaturaGuncelleMesaj"] != null)
+    {
+        <text>
+            swal({
+                title: "Başarılı!",
+                text: "@TempData["FaturaGuncelleMesaj"]",
+                icon: "success",
+                button: "Tamam",
+            });
+        </text>
+    }
+
+    // Form gönderme işlemi için
+    $('form').submit(function(event) {
+        // Formun gönderilmesini engelle
+        event.preventDefault();
+
+        // SweetAlert ile başarı mesajı
+        swal({
+            title: "Başarılı!",
+            text: "Fatura başarıyla güncellendi.",
+            icon: "success",
+            button: "Tamam",
+        }).then(() => {
+            // Mesajdan sonra formu gönder
+            $(this).off('submit').submit(); // formu gönder
+        });
+    });
+</script>

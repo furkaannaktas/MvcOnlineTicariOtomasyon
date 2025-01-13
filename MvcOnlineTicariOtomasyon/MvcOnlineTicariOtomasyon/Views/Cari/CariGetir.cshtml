@@ -1,0 +1,53 @@
+﻿@model MvcOnlineTicariOtomasyon.Models.Siniflar.Cariler
+@{
+    ViewBag.Title = "CariGetir";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<br />
+<h2>Cari Güncelleme Ekranı</h2>
+<br />
+<form id="cariGuncelleForm" class="form-group">
+    <div>
+        @Html.HiddenFor(x => x.Cariid)
+        @Html.LabelFor(x => x.CariAd)
+        @Html.TextBoxFor(x => x.CariAd, new { @class = "form-control", required = "required" })
+        @Html.ValidationMessageFor(x => x.CariAd, "", new { @style = "color:red" })
+        <br />
+        @Html.LabelFor(x => x.CariSoyad)
+        @Html.TextBoxFor(x => x.CariSoyad, new { @class = "form-control", required = "required" })
+        @Html.ValidationMessageFor(x => x.CariSoyad, "", new { @style = "color:orange" })
+        <br />
+        @Html.LabelFor(x => x.CariSehir)
+        @Html.TextBoxFor(x => x.CariSehir, new { @class = "form-control", required = "required" })
+        <br />
+        @Html.LabelFor(x => x.CariMail)
+        @Html.TextBoxFor(x => x.CariMail, new { @class = "form-control", type = "email", required = "required" })
+        <br />
+        <button type="button" class="btn btn-warning" onclick="submitForm()">Güncelle</button>
+    </div>
+</form>
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+<script>
+    function submitForm() {
+        // Formu AJAX ile gönderiyoruz
+        $.ajax({
+            url: '@Url.Action("CariGuncelle", "Cari")',
+            type: 'POST',
+            data: $('#cariGuncelleForm').serialize(),
+            success: function () {
+                swal({
+                    title: "Başarılı!",
+                    text: "Cari bilgisi başarıyla güncellendi.",
+                    icon: "success",
+                    button: "Tamam",
+                }).then(() => {
+                    window.location.href = '/Cari/Index'; // Güncelleme sonrası yönlendirme
+                });
+            }
+        });
+    }
+</script>

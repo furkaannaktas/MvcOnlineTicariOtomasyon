@@ -1,0 +1,81 @@
+﻿@using MvcOnlineTicariOtomasyon.Models.Siniflar
+@using PagedList
+@using PagedList.Mvc
+@model PagedList.IPagedList<Kategori>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+<br />
+<table class="table table-bordered table-dark table-hover table-striped" style="margin-top:20px">
+    <tr>
+        <th>Kategori Adı</th>
+        <th>Sil</th>
+        <th>Güncelle</th>
+    </tr>
+    @foreach (var k in Model)
+    {
+        <tr>
+            <td>
+                @k.KategoriAD
+            </td>
+            <!-- Silme butonu için onay ekranı -->
+            <td>
+                <button class="btn btn-danger" onclick="confirmDelete('@k.KategoriID')">Sil</button>
+            </td>
+            <td><a href="/Kategori/KategoriGetir/@k.KategoriID" class="btn btn-warning">Güncelle</a></td>
+        </tr>
+    }
+</table>
+
+@Html.PagedListPager((IPagedList)Model, sayfa => Url.Action("Index", new { sayfa }), new PagedListRenderOptions
+{
+    LiElementClasses = new List<string> { "page-link" }
+})
+
+<a href="/Kategori/KategoriEkle" class="btn btn-info">Kategori Ekle</a>
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+<script>
+    // Silme işlemini onaylamak için SweetAlert kullanıyoruz
+    function confirmDelete(categoryId) {
+        swal({
+            title: "Emin misiniz?",
+            text: "Bir kez silindiğinde, bu kategoriyi geri alamazsınız!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((willDelete) => {
+            if (willDelete) {
+                // Silme işlemi onaylandığında AJAX ile silme işlemi gerçekleştirilir
+                $.ajax({
+                    url: '/Kategori/KategoriSil/' + categoryId,
+                    type: 'POST',
+                    success: function () {
+                        swal({
+                            title: "Başarılı!",
+                            text: "Kategori başarıyla silindi.",
+                            icon: "success",
+                            button: "Tamam",
+                        }).then(() => {
+                            window.location.href = '/Kategori/Index';  // Sayfayı yenile
+                        });
+                    },
+                    error: function () {
+                        swal({
+                            title: "Hata!",
+                            text: "Kategori silinirken bir hata oluştu.",
+                            icon: "error",
+                            button: "Tamam",
+                        });
+                    }
+                });
+            } else {
+                swal("Kategori silinmedi!");
+            }
+        });
+    }
+</script>

@@ -1,0 +1,58 @@
+﻿@model MvcOnlineTicariOtomasyon.Models.Siniflar.KargoDetay
+@{
+    ViewBag.Title = "YeniKargo";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+<br />
+<h2>Yeni Kargo Bilgisi Sayfası</h2>
+<br />
+<form class="form-group" method="post" id="kargoForm">
+    @Html.LabelFor(x => x.TakipKodu)
+    <input type="text" value="@ViewBag.takipkod" class="form-control" readonly name="TakipKodu" />
+    <br />
+    @Html.LabelFor(x => x.Personel)
+    @Html.TextBoxFor(x => x.Personel, new { @class = "form-control" })
+    <br />
+    @Html.LabelFor(x => x.Alici)
+    @Html.TextBoxFor(x => x.Alici, new { @class = "form-control" })
+    <br />
+    @Html.LabelFor(x => x.Tarih)
+    <input class="form-control" type="date" name="Tarih" />
+    <br />
+    @Html.LabelFor(x => x.Aciklama)
+    @Html.TextAreaFor(x => x.Aciklama, new { @class = "form-control" })
+    <br />
+    <button type="submit" class="btn btn-info" id="submitBtn">Kaydet</button>
+</form>
+
+<script>
+    $(document).ready(function () {
+        $('#kargoForm').on('submit', function (event) {
+            event.preventDefault(); // Sayfanın yeniden yüklenmesini engelle
+
+            // Form verilerini AJAX ile gönder
+            $.ajax({
+                url: '@Url.Action("YeniKargo", "Kargo")', // Action ve Controller
+                type: 'POST',
+                data: $(this).serialize(), // Form verilerini serialize et
+                success: function () {
+                    // Başarılı olduğunda SweetAlert mesajı göster
+                    swal({
+                        title: "Başarılı!",
+                        text: "Yeni kargo başarıyla eklendi.",
+                        icon: "success",
+                        button: "Tamam",
+                    }).then(() => {
+                        // Mesajdan sonra yönlendirme
+                        window.location.href = '@Url.Action("Index", "Kargo")'; // Listeleme sayfasına yönlendir
+                    });
+                }
+            });
+        });
+    });
+</script>
+

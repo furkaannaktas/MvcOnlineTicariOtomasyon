@@ -1,0 +1,38 @@
+﻿@model MvcOnlineTicariOtomasyon.Models.Siniflar.Kategori
+@{
+    ViewBag.Title = "KategoriGetir";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="~/Scripts/jquery-3.7.0.js"></script>
+
+<br />
+<h2>Kategori Güncelleme</h2>
+<br />
+@using (Html.BeginForm("KategoriGuncelle", "Kategori", FormMethod.Post))
+{
+    <div class="form-group">
+        @Html.LabelFor(x => x.KategoriAD)
+        @Html.TextBoxFor(x => x.KategoriAD, new { @class = "form-control" })
+        @Html.HiddenFor(x => x.KategoriID)
+    </div>
+    <button type="submit" class="btn btn-warning" id="Btn1">Güncelle</button>
+}
+
+<script>
+    $('#Btn1').click(function (event) {
+        event.preventDefault(); // Formun otomatik olarak gönderilmesini engeller
+
+        // SweetAlert ile başarı mesajı
+        swal({
+            title: "Başarılı!",
+            text: "Kategori başarıyla güncellendi.",
+            icon: "success",
+            button: "Tamam",
+        }).then(() => {
+            // Mesajdan sonra formu gönder
+            $('form').submit();
+        });
+    });
+</script>

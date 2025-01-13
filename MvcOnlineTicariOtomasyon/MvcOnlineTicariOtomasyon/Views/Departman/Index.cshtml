@@ -1,0 +1,76 @@
+﻿@using MvcOnlineTicariOtomasyon.Models.Siniflar
+@model List<Departman>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<table class="table table-bordered table-hover table-dark table-striped" style="margin-top:20px">
+    <tr>
+        <th>Departman Adı</th>
+        <th>Sil</th>
+        <th>Güncelle</th>
+        <th>Detaylar</th>
+    </tr>
+    @foreach (var k in Model)
+    {
+        <tr>
+            <td>
+                @k.DepartmanAd
+            </td>
+            <!-- Silme butonu için onay ekranı -->
+            <td>
+                <button class="btn btn-danger" onclick="confirmDelete('@k.Departmanid')">Sil</button>
+            </td>
+            <td><a href="/Departman/DepartmanGetir/@k.Departmanid" class="btn btn-warning">Güncelle</a></td>
+            <td><a href="/Departman/DepartmanDetay/@k.Departmanid" class="btn btn-default" style="background-color:lightcoral">Detaylar</a></td>
+        </tr>
+    }
+</table>
+
+<a href="/Departman/DepartmanEkle" class="btn btn-info">Departman Ekle</a>
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+<script>
+    // Silme işlemini onaylamak için SweetAlert kullanıyoruz
+    function confirmDelete(departmentId) {
+        swal({
+            title: "Emin misiniz?",
+            text: "Bir kez silindiğinde, bu departmanı geri alamazsınız!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    // Silme işlemi onaylandığında sayfayı yeniden yükle ve URL'yi oluştur
+                    $.ajax({
+                        url: '/Departman/DepartmanSil/' + departmentId,
+                        type: 'POST',
+                        success: function (result) {
+                            swal({
+                                title: "Başarılı!",
+                                text: "Departman başarıyla silindi.",
+                                icon: "success",
+                                button: "Tamam",
+                            }).then(() => {
+                                window.location.href = '/Departman/Index';  // Sayfayı yenile
+                            });
+                        },
+                        error: function () {
+                            swal({
+                                title: "Hata!",
+                                text: "Departman silinirken bir hata oluştu.",
+                                icon: "error",
+                                button: "Tamam",
+                            });
+                        }
+                    });
+                } else {
+                    swal("Departmanınız güvende!");
+                }
+            });
+    }
+</script>

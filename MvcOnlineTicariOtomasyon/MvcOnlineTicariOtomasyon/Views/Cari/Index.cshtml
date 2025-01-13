@@ -1,0 +1,75 @@
+﻿@using MvcOnlineTicariOtomasyon.Models.Siniflar
+@model List<Cariler>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<br />
+<table class="table table-striped table-hover table-dark table-striped">
+    <tr>
+        <th>Ad</th>
+        <th>Soyad</th>
+        <th>Şehir</th>
+        <th>Mail</th>
+        <th>Sil</th>
+        <th>Güncelle</th>
+        <th>Detaylar</th>
+    </tr>
+    @foreach (var x in Model)
+    {
+        <tr id="row-@x.Cariid">
+            <td>@x.CariAd</td>
+            <td>@x.CariSoyad</td>
+            <td>@x.CariSehir</td>
+            <td>@x.CariMail</td>
+            <td><button class="btn btn-danger" onclick="confirmDelete('@x.Cariid')">Sil</button></td>
+            <td><a href="/Cari/CariGetir/@x.Cariid" class="btn btn-warning">Güncelle</a></td>
+            <td><a href="/Cari/MusteriSatis/@x.Cariid" class="btn btn-default" style="background-color:lightcoral">Sipariş Geçmişi</a></td>
+        </tr>
+    }
+</table>
+<a href="/Cari/YeniCari/" class="btn btn-info">Yeni Cari Ekle</a>
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+<script>
+    // Silme işlemi için SweetAlert kullanarak onay alıyoruz
+    function confirmDelete(cariId) {
+        swal({
+            title: "Emin misiniz?",
+            text: "Bu cariyi silmek istediğinizden emin misiniz? Silindiğinde geri alınamaz!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((willDelete) => {
+            if (willDelete) {
+                $.ajax({
+                    url: '/Cari/CariSil/' + cariId,
+                    type: 'POST',
+                    success: function () {
+                        swal({
+                            title: "Başarılı!",
+                            text: "Cari başarıyla silindi.",
+                            icon: "success",
+                            button: "Tamam",
+                        }).then(() => {
+                            $('#row-' + cariId).remove(); // Tablo satırını kaldır
+                        });
+                    },
+                    error: function () {
+                        swal({
+                            title: "Hata!",
+                            text: "Bir hata oluştu. Lütfen tekrar deneyin.",
+                            icon: "error",
+                            button: "Tamam",
+                        });
+                    }
+                });
+            }
+        });
+    }
+</script>

@@ -1,0 +1,72 @@
+﻿
+@{
+    ViewBag.Title = "Index5";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+@{
+    ViewBag.Title = "Index5";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<!DOCTYPE html>
+<br />
+<h2>Ürün - Stok Grafiği Pie</h2>
+<html lang="en">
+<head>
+    <title>Ürün Stok Grafiği</title>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json",
+                url: '@Url.Action("VisualizeUrunResult2", "Grafik")',
+                success: function (result) {
+                    console.log("Dönen Veri:", result); // Gelen veriyi kontrol edin
+                    google.charts.load('current', { 'packages': ['corechart'] });
+                    google.charts.setOnLoadCallback(function () {
+                        drawChart(result);
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error("AJAX Hatası:", error);
+                }
+            });
+        });
+
+        function drawChart(result) {
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Ürün Adı');
+            data.addColumn('number', 'Stok Miktarı');
+            var dataArray = [];
+
+            $.each(result, function (i, obj) {
+                if (obj.urn && obj.stk) {
+                    dataArray.push([obj.urn, obj.stk]);
+                }
+            });
+
+            console.log("Grafik Verisi:", dataArray);
+            data.addRows(dataArray);
+
+            var pieChartOptions = {
+                //title: "Ürün - Stok Grafiği",
+                width: 1500,
+                height: 800
+            };
+
+            var pieChart = new google.visualization.PieChart(
+                document.getElementById('Piechart_div')
+            );
+
+            pieChart.draw(data, pieChartOptions);
+        }
+    </script>
+</head>
+<body>
+    <div id="Piechart_div"></div>
+</body>
+</html>
