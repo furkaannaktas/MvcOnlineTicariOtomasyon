@@ -25,3 +25,50 @@
 ![Ekran görüntüsü 2025-01-13 234109](https://github.com/user-attachments/assets/4d448084-46cc-41c0-8eb6-093645d6f031)
 ![Ekran görüntüsü 2025-01-13 234123](https://github.com/user-attachments/assets/66b74f1b-091b-4db2-8ac9-72b55e5b2b7c)
 ![Ekran görüntüsü 2025-01-13 234140](https://github.com/user-attachments/assets/42d3368d-993f-42fc-a706-e6f7a2cec766)
+
+# MvcOnlineTicariOtomasyon
+
+Bu proje, **Murat Yücedağ** hocamızın rehberliğinde geliştirilmiş bir **ASP.NET MVC 5** tabanlı Online Ticari Otomasyon uygulamasıdır. Proje, ticari işlemlerin dijital ortamda takip ve yönetimini sağlayan kapsamlı bir çözümdür.
+
+## 📋 Proje Hakkında
+**MvcOnlineTicariOtomasyon**, küçük ve orta ölçekli işletmelerin:
+- Müşteri ve ürün bilgilerini yönetebilmesini,
+- Fatura işlemlerini kaydedip takip edebilmesini,
+- Satış süreçlerini organize edebilmesini,
+- Stok ve cari hesap takibini yapabilmesini sağlar.
+
+Proje, modern yazılım geliştirme standartlarına uygun olarak tasarlanmış ve birçok pratik özelliği bir araya getirmiştir.
+
+---
+
+## 🚀 Kullanılan Teknolojiler
+Projenin geliştirilmesinde kullanılan başlıca teknolojiler:
+- **ASP.NET MVC 5**: Projenin temel çatısı.
+- **Entity Framework**: Veritabanı işlemleri için.
+- **Microsoft SQL Server**: Veritabanı yönetimi için.
+- **HTML5 & CSS3**: Ön yüz geliştirmesi için.
+- **jQuery & JavaScript**: Dinamik ve kullanıcı dostu arayüzler için.
+- **Bootstrap**: Responsive tasarım için.
+
+---
+
+## 📦 Özellikler
+- **Müşteri Yönetimi**:
+  - Yeni müşteri ekleme, düzenleme ve silme.
+  - Mevcut müşterilerin bilgilerini listeleme.
+- **Ürün Yönetimi**:
+  - Stok kontrolü ve güncellenmesi.
+  - Yeni ürün ekleme ve ürün detaylarını görüntüleme.
+- **Fatura Yönetimi**:
+  - Fatura girişi ve listeleme.
+  - Fatura kalemlerinin detaylı görüntülenmesi.
+- **Satış Takibi**:
+  - Satış işlemlerinin yönetimi.
+  - Cari hesap takibi.
+- **Raporlama**:
+  - Genel raporların alınabilmesi.
+  - Grafik ve tablolarla analiz yapma.
+
+---
+
+
